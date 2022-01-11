@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+
+  app:
+    container_name: algorithms-complexity-test
+    image: algorithms-complexity-golang:v1.0
+    volumes:
+      - "./:/go/src/app"
+      #- "./.env.example:/artifacts/.env"
+    command: ["/artifacts/app"]
