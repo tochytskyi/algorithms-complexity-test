@@ -17,9 +17,9 @@ func main() {
 
 	test := os.Getenv("TEST")
 
-	//bst.RunInsert()
-	//bst.RunSearch()
-	//bst.RunDelete()
+	bst.RunInsert()
+	bst.RunSearch()
+	bst.RunDelete()
 
 	countingSort.Run()
 
