@@ -1,9 +1,5 @@
 package bst
 
-import (
-	"errors"
-)
-
 type Tree struct {
 	root *Node
 }
@@ -70,7 +66,7 @@ func (n *Node) insert(value int) {
 	}
 }
 
-func find(node *Node, value int) (*Node, error) {
+func find(node *Node, value int) *Node {
 	var next *Node
 
 	if value < node.key {
@@ -78,11 +74,11 @@ func find(node *Node, value int) (*Node, error) {
 	} else if value > node.key {
 		next = node.right
 	} else {
-		return node, nil
+		return node
 	}
 
 	if next == nil {
-		return &Node{}, errors.New("Node not found")
+		return nil
 	}
 
 	return find(next, value)
@@ -117,17 +113,18 @@ func remove(node *Node, key int) *Node {
 		return node
 	}
 
-	leftmostrightside := node.right
+	leftMostRightSide := node.right
+
 	for {
-		//find smallest value on the right side
-		if leftmostrightside != nil && leftmostrightside.left != nil {
-			leftmostrightside = leftmostrightside.left
+		//find the smallest value on the right side
+		if leftMostRightSide != nil && leftMostRightSide.left != nil {
+			leftMostRightSide = leftMostRightSide.left
 		} else {
 			break
 		}
 	}
 
-	node.key = leftmostrightside.key
+	node.key = leftMostRightSide.key
 	node.right = remove(node.right, node.key)
 
 	return node

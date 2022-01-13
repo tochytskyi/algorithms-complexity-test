@@ -1,5 +1,5 @@
 # algorithms-complexity-test
-Make BST and Counting Sort, generate 100 random datasets and measure complexity
+Make BST and Counting Sort, generate random datasets and measure complexity
 
 ### Prepare code
 `make build && make up`
@@ -49,3 +49,27 @@ algorithms-complexity-test | 2022/01/13 12:56:49 Delete element from 100000 node
 ```
 
 ![img.png](docs/img_2.png)
+
+## Counting sort
+
+Counting sort going slower for arrays with large items range. For the same array size where range is 20000 time is too big comparing to lower ranges 
+
+```shell
+algorithms-complexity-test | Sort 100 elements with items range 10: 31900 nanoseconds
+algorithms-complexity-test | Sort 100 elements with items range 100: 69100 nanoseconds
+algorithms-complexity-test | Sort 100 elements with items range 1000: 67400 nanoseconds
+algorithms-complexity-test | Sort 100 elements with items range 5000: 67500 nanoseconds
+algorithms-complexity-test | Sort 100 elements with items range 20000: 970900 nanoseconds
+
+algorithms-complexity-test | Sort 1000 elements with items range 10: 44000 nanoseconds
+algorithms-complexity-test | Sort 1000 elements with items range 100: 48400 nanoseconds
+algorithms-complexity-test | Sort 1000 elements with items range 1000: 98100 nanoseconds
+algorithms-complexity-test | Sort 1000 elements with items range 5000: 85100 nanoseconds
+algorithms-complexity-test | Sort 1000 elements with items range 20000: 153400 nanoseconds
+
+algorithms-complexity-test | Sort 10000 elements with items range 10: 105600 nanoseconds
+algorithms-complexity-test | Sort 10000 elements with items range 100: 100200 nanoseconds
+algorithms-complexity-test | Sort 10000 elements with items range 1000: 119700 nanoseconds
+algorithms-complexity-test | Sort 10000 elements with items range 5000: 154600 nanoseconds
+algorithms-complexity-test | Sort 10000 elements with items range 20000: 291900 nanoseconds
+```
