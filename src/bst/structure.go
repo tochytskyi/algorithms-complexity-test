@@ -8,12 +8,44 @@ type Tree struct {
 	root *Node
 }
 
-func (t *Tree) insert(value int) {
-	if t.root == nil {
-		t.root = &Node{key: value}
+func (tree *Tree) Insert(value int) {
+	if tree.root == nil {
+		tree.root = &Node{key: value}
 	} else {
-		t.root.insert(value)
+		tree.root.insert(value)
 	}
+}
+
+func (tree *Tree) Remove(key int) {
+	remove(tree.root, key)
+}
+
+func (tree *Tree) Min() *Node {
+	if tree.root == nil {
+		return nil
+	}
+
+	node := tree.root
+
+	for node.left != nil {
+		node = node.left
+	}
+
+	return node
+}
+
+func (tree *Tree) Max() *Node {
+	if tree.root == nil {
+		return nil
+	}
+
+	node := tree.root
+
+	for node.right != nil {
+		node = node.right
+	}
+
+	return node
 }
 
 type Node struct {
@@ -39,16 +71,14 @@ func (n *Node) insert(value int) {
 }
 
 func find(node *Node, value int) (*Node, error) {
-	if value == node.key {
-		return node, nil
-	}
-
 	var next *Node
 
-	if value <= node.key {
+	if value < node.key {
 		next = node.left
-	} else {
+	} else if value > node.key {
 		next = node.right
+	} else {
+		return node, nil
 	}
 
 	if next == nil {
@@ -56,4 +86,49 @@ func find(node *Node, value int) (*Node, error) {
 	}
 
 	return find(next, value)
+}
+
+func remove(node *Node, key int) *Node {
+	if node == nil {
+		return nil
+	}
+
+	if key < node.key {
+		node.left = remove(node.left, key)
+		return node
+	}
+
+	if key > node.key {
+		node.right = remove(node.right, key)
+		return node
+	}
+
+	// key == node.key
+	if node.left == nil && node.right == nil {
+		node = nil
+		return nil
+	}
+	if node.left == nil {
+		node = node.right
+		return node
+	}
+	if node.right == nil {
+		node = node.left
+		return node
+	}
+
+	leftmostrightside := node.right
+	for {
+		//find smallest value on the right side
+		if leftmostrightside != nil && leftmostrightside.left != nil {
+			leftmostrightside = leftmostrightside.left
+		} else {
+			break
+		}
+	}
+
+	node.key = leftmostrightside.key
+	node.right = remove(node.right, node.key)
+
+	return node
 }

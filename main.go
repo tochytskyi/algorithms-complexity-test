@@ -17,7 +17,9 @@ func main() {
 		test := os.Getenv("TEST")
 	*/
 
-	bst.Run()
+	bst.RunInsert()
+	bst.RunSearch()
+	bst.RunDelete()
 
 	log.Println()
 	log.Println("finished")

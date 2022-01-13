@@ -2,30 +2,35 @@ package bst
 
 import (
 	"log"
+	//"math"
+	"math/rand"
+	"time"
 )
 
-func Run() {
-	var t Tree
+func RunInsert() {
+	datasetSizes := []int{100, 1000, 2000, 5000, 10000, 20000, 50000, 100000}
 
-	t.insert(5)
-	t.insert(4)
-	t.insert(1)
-	t.insert(10)
-
-	printPreOrder(t.root)
-
-	log.Println("Try to find node with value 1")
-	foundNode, err := find(t.root, 1)
-
-	if err == nil {
-		log.Printf("Node found with value %d ", foundNode.key)
+	for _, datasetSize := range datasetSizes {
+		result := runInserts(datasetSize)
+		log.Printf("Inserted %d elements for %d nanoseconds", datasetSize, result)
 	}
+}
 
-	log.Println("Try to find node with value 9")
-	foundNode2, err2 := find(t.root, 9)
+func RunSearch() {
+	datasetSizes := []int{100, 1000, 2000, 5000, 10000, 20000, 50000, 100000}
 
-	if err2 == nil {
-		log.Printf("Node found with value %d ", foundNode2.key)
+	for _, datasetSize := range datasetSizes {
+		result := runFinds(datasetSize)
+		log.Printf("Find element from %d nodes for %d nanoseconds", datasetSize, result)
+	}
+}
+
+func RunDelete() {
+	datasetSizes := []int{100, 1000, 2000, 5000, 10000, 20000, 50000, 100000}
+
+	for _, datasetSize := range datasetSizes {
+		result := runDeletes(datasetSize)
+		log.Printf("Delete element from %d nodes for %d nanoseconds", datasetSize, result)
 	}
 }
 
@@ -37,4 +42,76 @@ func printPreOrder(n *Node) {
 		printPreOrder(n.left)
 		printPreOrder(n.right)
 	}
+}
+
+func runInserts(size int) int64 {
+	var timestampSum int64
+	iterations := 20
+
+	for i := 0; i < iterations; i++ {
+		dataset := makeRandomDataset(size)
+		before := makeNanoTimestamp()
+		tree := &Tree{}
+
+		for _, element := range dataset {
+			tree.Insert(element)
+		}
+
+		timestampSum += makeNanoTimestamp() - before
+	}
+
+	return int64(timestampSum / int64(iterations))
+}
+
+func runFinds(size int) int64 {
+	var timestampSum int64
+	iterations := 20
+
+	for i := 0; i < iterations; i++ {
+		dataset := makeRandomDataset(size)
+		tree := &Tree{}
+		for _, element := range dataset {
+			tree.Insert(element)
+		}
+
+		before := makeNanoTimestamp()
+		find(tree.root, rand.Intn(50000))
+		timestampSum += makeNanoTimestamp() - before
+	}
+
+	return int64(timestampSum / int64(iterations))
+}
+
+func runDeletes(size int) int64 {
+	var timestampSum int64
+	iterations := 20
+
+	for i := 0; i < iterations; i++ {
+		dataset := makeRandomDataset(size)
+		tree := &Tree{}
+		for _, element := range dataset {
+			tree.Insert(element)
+		}
+
+		before := makeNanoTimestamp()
+		tree.Remove(dataset[int(size/2)])
+		timestampSum += makeNanoTimestamp() - before
+	}
+
+	return int64(timestampSum / int64(iterations))
+}
+
+func makeRandomDataset(size int) []int {
+	dataset := make([]int, 0, size)
+
+	for i := 0; i < size; i++ {
+		rand.Seed(time.Now().UnixNano())
+		dataset = append(dataset, rand.Intn(50000))
+	}
+
+	return dataset
+}
+
+func makeNanoTimestamp() int64 {
+	return time.Now().UnixNano()
 }
