@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"github.com/tchtsk/algorithms-complexity-test/src/bst"
+	"github.com/tchtsk/algorithms-complexity-test/src/bst"
 	"github.com/tchtsk/algorithms-complexity-test/src/countingSort"
 	"log"
 	"os"

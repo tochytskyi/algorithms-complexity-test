@@ -1,5 +1,5 @@
 # --- Step 1
-FROM golang:1.16-alpine AS local
+FROM golang:1.17-alpine AS local
 
 WORKDIR /go/src/app
 
